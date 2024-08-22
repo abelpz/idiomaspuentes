@@ -1,34 +1,29 @@
 //Guardar elemento
 const botonAgregar = document.getElementById("agregar");
-const elementoAsistentes = document.getElementById("asistentes");
+const elementoTareas = document.getElementById("lista");
 const inputNombre = document.getElementById("nombre");
 
-const asistentes = []
+const db = window.localStorage;
+const tareasIniciales = JSON.parse(db.getItem("listaDeTareas"))
+
+const tareas = tareasIniciales ?? [];
+
+if (tareas.length) {
+  mostrarTareas(tareas);
+}
 
 botonAgregar.onclick = () => {
   botonAgregar.innerText = "agregar otro";
-  asistentes.push(inputNombre.value);
-  elementoAsistentes.innerText = asistentes.join(", ");
+  tareas.push(inputNombre.value);
+  db.setItem("listaDeTareas", JSON.stringify(tareas));
+  mostrarTareas(tareas)
   inputNombre.value = "";
   inputNombre.focus();
 }
 
-//Si quiero realizar una accion cuando el usuario haga click en un elemento
-const boton = document.getElementById("idDeMiBoton");
-boton.onclick = () => {
-  //Todo las acciones que quiero que haga mi funcion cuando haga click
+function mostrarTareas(listaTareas) {
+  elementoTareas.innerHTML = "";
+  listaTareas.forEach((tarea) => {
+    elementoTareas.innerHTML += `<div class="tarea">${tarea}</div>`
+  });
 }
-
-//Cambiar el texto dentro de un elemento (no incluye formularios)
-const elemeto = document.getElementById("idDeMiElemento");
-elemento.innerText = "TEXTO NUEVO";
-
-//Obtener el valor de un input text (un elemento de formulario)
-const elementoInput = document.getElementById("idDeMiElementoInput");
-
-//Guardar el valor del elemento
-const valor = elementoInput.value;
-console.log(valor);
-
-//Cambiar el valor del elemento
-elementoInput.value = "NUEVO VALOR DE MI ELEMENTO INPUT"
